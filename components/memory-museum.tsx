@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, Html, Sparkles } from '@react-three/drei'
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { Component, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import * as THREE from 'three'
 import { ArrowUpRight, Heart, Music2, Pause, Play, Volume2, X } from 'lucide-react'
 
@@ -103,6 +103,12 @@ function MuseumScene({ onOpen }: { onOpen: (memory: Memory) => void }) {
   </Canvas>
 }
 
+class GraphicsBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() { return this.state.failed ? this.props.fallback : this.props.children }
+}
+
 export function MemoryMuseum() {
   const [started, setStarted] = useState(false)
   const [selected, setSelected] = useState<Memory | null>(null)
@@ -110,8 +116,9 @@ export function MemoryMuseum() {
   const [sound, setSound] = useState(false)
   const handleKey = useCallback((event: KeyboardEvent) => { if (event.key.toLowerCase() === 'e' && !selected) setDialogue(true); if (event.key === 'Escape') { setSelected(null); setDialogue(false) } }, [selected])
   useEffect(() => { window.addEventListener('keydown', handleKey); return () => window.removeEventListener('keydown', handleKey) }, [handleKey])
+  const fallback = <div className="museum-fallback"><div className="fallback-light" /><div className="fallback-copy"><span className="eyebrow">A LITTLE WORLD, MADE FOR YOU</span><h2>Our story,<br /><em>in little moments.</em></h2><p>Pick a memory to open its frame.</p></div><div className="fallback-gallery">{memories.map((memory, index) => <button key={memory.title} className="fallback-frame" onClick={() => setSelected(memory)}><span className="fallback-art" style={{ background: `radial-gradient(circle at 50% 45%, #f4d4c3 0 12%, ${memory.color} 13% 43%, #70554d 100%)` }}><span>0{index + 1}</span></span><span className="fallback-title">{memory.title}</span></button>)}</div><span className="fallback-note">SOME MOMENTS DESERVE THEIR OWN PLACE</span></div>
   return <main className="museum-shell">
-    <div className="museum-world"><Suspense fallback={<div className="loading-world">Preparing your little world…</div>}><MuseumScene onOpen={setSelected} /></Suspense></div>
+    <div className="museum-world"><GraphicsBoundary fallback={fallback}><Suspense fallback={<div className="loading-world">Preparing your little world…</div>}><MuseumScene onOpen={setSelected} /></Suspense></GraphicsBoundary></div>
     <header className="game-topbar"><a className="brand-mark" href="#home" aria-label="Our Little World home"><span className="brand-heart"><Heart size={15} fill="currentColor" /></span><span>OUR LITTLE WORLD<small>A MEMORY MUSEUM</small></span></a><div className="topbar-right"><span className="chapter-tag"><span className="live-dot" />CHAPTER 01 <i>/</i> THE BEGINNING</span><button className="icon-button" aria-label={sound ? 'Mute music' : 'Enable music'} onClick={() => setSound(!sound)}><Volume2 size={17} /></button></div></header>
     {started && <><div className="chapter-heading"><span className="eyebrow">GALLERY ONE</span><h1>The beginning<span className="heading-period">.</span></h1><p>Every great story has a first page.</p></div><aside className="gallery-index"><div className="index-title">YOUR STORY</div>{['The beginning', 'Our favorite days', 'Little things', 'A place for us'].map((room, index) => <div className={`index-row ${index === 0 ? 'is-active' : ''}`} key={room}><span className="index-number">0{index + 1}</span>{room}{index === 3 && <span className="locked-mark">✦</span>}</div>)}</aside><div className="controls-hint"><div className="key-cluster"><kbd>W</kbd><div><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div></div><span>TO WANDER</span><span className="control-divider" /><kbd className="key-wide">SHIFT</kbd><span>TO HURRY</span><span className="control-divider" /><span className="mouse-symbol">↔</span><span>DRAG TO LOOK</span></div><div className="memory-count"><span>MEMORIES FOUND</span><strong>01 <i>/</i> 06</strong><div className="count-track"><span /></div></div><button className="npc-prompt" onClick={() => setDialogue(true)}><span className="npc-heart"><Heart size={16} /></span><span>Someone is waiting for you<small>Press E to say hello</small></span><ArrowUpRight size={16} /></button></>}
     {!started && <div className="welcome-overlay" id="home"><div className="welcome-card"><div className="welcome-kicker"><span /> A LITTLE WORLD, MADE FOR YOU</div><div className="welcome-heart"><Heart size={18} fill="currentColor" /></div><h1>Our Little<br /><em>World.</em></h1><p>A walk through all the little moments that became our favorite story.</p><button className="enter-button" onClick={() => setStarted(true)}>Step inside <ArrowUpRight size={17} /></button><div className="welcome-footnote">TAKE YOUR TIME · THERE&apos;S NO RUSH</div></div><div className="welcome-side-note">A PLACE TO REMEMBER, AND TO DREAM A LITTLE MORE <span>✳</span></div></div>}

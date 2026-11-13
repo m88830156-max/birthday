@@ -246,3 +246,18 @@ kbd { min-width: 19px; height: 18px; display: inline-grid; place-items: center; 
   .game-topbar { padding: 19px 18px; }.chapter-tag { display: none; }.chapter-heading { top: 17%; left: 7vw; }.chapter-heading h1 { font-size: 42px; }.chapter-heading p { max-width: 230px; font-size: 13px; }.gallery-index { display: none; }.controls-hint { left: 14px; bottom: 20px; gap: 6px; font-size: 7px; }.control-divider { margin: 0 2px; }.memory-count { display: none; }.npc-prompt { bottom: 67px; min-width: 235px; }.music-toggle { top: 72px; right: 14px; }.welcome-card { padding: 32px 26px 26px; }.welcome-card h1 { font-size: 49px; }.welcome-side-note { display: none; }.memory-modal { grid-template-columns: 1fr; max-width: 410px; max-height: calc(100dvh - 34px); overflow-y: auto; }.modal-art { min-height: 190px; }.modal-art-halo { width: 110px; }.modal-copy { padding: 28px 28px 30px; }.modal-copy h2 { font-size: 29px; }.modal-rule { margin: 14px 0; }.modal-note { margin-bottom: 6px; font-size: 13px; }.dialogue-card { padding: 40px 27px 30px; }
 }
 @media (max-width: 390px) { .controls-hint { gap: 4px; font-size: 6px; }.controls-hint .control-divider:nth-of-type(2), .controls-hint .mouse-symbol, .controls-hint .mouse-symbol + span { display: none; } }
+.museum-fallback { position: absolute; inset: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 130px 8vw 80px; background: radial-gradient(ellipse at 70% 48%, #694b49, transparent 40%), linear-gradient(135deg, #282126, #493539 55%, #241d22); }
+.fallback-light { position: absolute; inset: 0; opacity: .6; background: repeating-linear-gradient(90deg, transparent 0 15%, rgba(224,188,148,.09) 15.1% 15.3%, transparent 15.4% 30%); }
+.fallback-copy, .fallback-gallery, .fallback-note { z-index: 1; }
+.fallback-copy h2 { margin: 12px 0 7px; color: #fff1e6; font-family: Georgia, serif; font-size: clamp(32px, 4.2vw, 56px); font-weight: 400; line-height: 1.04; letter-spacing: -.04em; }
+.fallback-copy h2 em { color: #e5b9a5; font-weight: 400; }
+.fallback-copy p { margin: 0; color: #d2bfb1; font-family: Georgia, serif; font-size: 13px; font-style: italic; }
+.fallback-gallery { display: grid; grid-template-columns: repeat(6, minmax(70px, 1fr)); gap: clamp(10px, 2.4vw, 30px); max-width: 900px; margin: 35px auto 0; width: 100%; }
+.fallback-frame { padding: 0; color: #f3e6db; background: transparent; border: 0; text-align: left; cursor: pointer; }
+.fallback-art { position: relative; display: grid; place-items: center; aspect-ratio: .84; padding: 10%; background-clip: content-box !important; border: 1px solid #c29b6b; box-shadow: 0 12px 28px rgba(10,7,10,.32); transition: transform .2s, box-shadow .2s; }
+.fallback-art::before { content: ''; position: absolute; inset: 9%; border: 1px solid rgba(255,239,218,.47); }
+.fallback-art > span { color: rgba(255,247,238,.86); font-family: Georgia, serif; font-size: 24px; text-shadow: 0 2px 10px #302125; }
+.fallback-frame:hover .fallback-art { transform: translateY(-5px); box-shadow: 0 18px 34px rgba(10,7,10,.45); }
+.fallback-title { display: block; margin-top: 12px; font-family: Georgia, serif; font-size: clamp(10px, 1vw, 13px); }
+.fallback-note { margin-top: 28px; color: #c9b6a9; font-size: 8px; letter-spacing: .2em; }
+@media (max-width: 720px) { .museum-fallback { padding: 125px 6vw 55px; }.fallback-gallery { grid-template-columns: repeat(3, minmax(70px, 1fr)); gap: 16px; max-width: 440px; margin-top: 24px; }.fallback-art { max-height: 150px; }.fallback-title { margin-top: 7px; }.fallback-note { margin-top: 18px; } }

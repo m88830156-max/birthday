@@ -260,4 +260,26 @@ kbd { min-width: 19px; height: 18px; display: inline-grid; place-items: center; 
 .fallback-frame:hover .fallback-art { transform: translateY(-5px); box-shadow: 0 18px 34px rgba(10,7,10,.45); }
 .fallback-title { display: block; margin-top: 12px; font-family: Georgia, serif; font-size: clamp(10px, 1vw, 13px); }
 .fallback-note { margin-top: 28px; color: #c9b6a9; font-size: 8px; letter-spacing: .2em; }
+.gallery-index ul, .fallback-gallery { list-style: none; padding: 0; }
+.gallery-index ul { margin: 0; }
+.fallback-gallery li { display: flex; min-width: 0; }
+.fallback-gallery .fallback-frame { width: 100%; }
+button.index-row { width: 100%; background: none; border: 0; text-align: left; cursor: pointer; transition: color .2s; }
+button.index-row:hover { color: #fff2e7; }
+.icon-button.is-on { color: #2c2221; background: #e5c3a1; border-color: #e5c3a1; }
+.count-track span { transition: width .5s ease; }
+.npc-prompt { transition: border-color .2s, box-shadow .2s; }
+.npc-prompt.is-near { border-color: rgba(229,189,168,.7); box-shadow: 0 0 28px rgba(229,189,168,.22); animation: prompt-in .25s ease-out; }
+@keyframes prompt-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+.frame-label span { display: inline-block; padding: 3px 8px; transition: color .2s; }
+.frame-label .is-near { color: #fff2e7; }
+.fallback-frame.is-found .fallback-art { border-color: #f1d6b9; box-shadow: 0 0 0 1px #f1d6b9, 0 12px 28px rgba(10,7,10,.32); }
+button:focus-visible, a:focus-visible { outline: 2px solid #e5c3a1; outline-offset: 3px; }
+.touch-joystick { display: none; z-index: 4; position: absolute; left: 22px; bottom: 26px; width: 112px; height: 112px; border-radius: 50%; background: rgba(34,27,29,.45); border: 1px solid rgba(229,189,168,.3); backdrop-filter: blur(8px); touch-action: none; place-items: center; }
+.touch-knob { width: 46px; height: 46px; border-radius: 50%; background: rgba(229,195,161,.85); box-shadow: 0 4px 18px rgba(0,0,0,.3); pointer-events: none; }
+@media (pointer: coarse) {
+  .touch-joystick { display: grid; }
+  .controls-hint { display: none; }
+  .npc-prompt { bottom: 158px; }
+}
 @media (max-width: 720px) { .museum-fallback { padding: 125px 6vw 55px; }.fallback-gallery { grid-template-columns: repeat(3, minmax(70px, 1fr)); gap: 16px; max-width: 440px; margin-top: 24px; }.fallback-art { max-height: 150px; }.fallback-title { margin-top: 7px; }.fallback-note { margin-top: 18px; } }
